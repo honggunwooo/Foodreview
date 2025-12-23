@@ -1,0 +1,26 @@
+{
+  "scripts": {
+    "dev": "ts-node-dev src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.1693.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "morgan": "^1.10.1",
+    "multer": "^1.4.5-lts.1",
+    "mysql2": "^3.10.0",
+    "pg": "^8.16.3"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^4.17.21",
+    "@types/morgan": "^1.9.10",
+    "@types/node": "^20.12.7",
+    "@types/pg": "^8.16.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.4.5"
+  }
+}
