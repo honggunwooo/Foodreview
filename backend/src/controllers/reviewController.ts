@@ -7,8 +7,11 @@ export const getReviews = async (
     next: NextFunction
 ) => {
     try {
-        const reviews = await ReviewService.getReviews();
-        res.json(reviews);
+        const page = Number(req.query.page) || 1;
+        const limit = Number(req.query.limit) || 10;
+
+        const reviews = await ReviewService.getReviews(page, limit);
+        res.status(200).json(reviews);
     } catch (err) {
         next(err);
     }
@@ -22,10 +25,6 @@ export const createReview = async (
     try {
         const { title, content, rating, author } = req.body;
 
-        if (!title || !content || !rating || !author) {
-            return res.status(400).json({ message: 'Missing required fields' });
-        }
-
         const review = await ReviewService.createReview(
             title,
             content,
@@ -34,6 +33,25 @@ export const createReview = async (
         );
 
         res.status(201).json(review);
+    } catch (err) {
+        next(err);
+    }
+};
+
+export const deleteReview = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+        const id = Number(req.params.id);
+
+        const deleted = await ReviewService.deleteReview(id);
+
+        res.status(200).json({
+            message: 'Review deleted',
+            deleted,
+        });
     } catch (err) {
         next(err);
     }

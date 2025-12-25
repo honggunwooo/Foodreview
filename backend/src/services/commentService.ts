@@ -1,4 +1,3 @@
-// src/services/commentService.ts
 import { CommentModel } from '../models/commentModel';
 
 export const CommentService = {

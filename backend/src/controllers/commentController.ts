@@ -1,4 +1,3 @@
-// src/controllers/commentController.ts
 import { Request, Response, NextFunction } from 'express';
 import { CommentService } from '../services/commentService';
 

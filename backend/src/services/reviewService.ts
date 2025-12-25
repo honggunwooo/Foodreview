@@ -1,13 +1,25 @@
 import { ReviewModel } from '../models/reviewModel';
 
 export const ReviewService = {
-    getReviews: () => ReviewModel.findAll(),
+    async getReviews(page: number, limit: number) {
+        const offset = (page - 1) * limit;
+        return ReviewModel.getAll(limit, offset);
+    },
 
-    createReview: (
+    async createReview(
         title: string,
         content: string,
         rating: number,
         author: string
-    ) =>
-        ReviewModel.create(title, content, rating, author),
+    ) {
+        return ReviewModel.create(title, content, rating, author);
+    },
+
+    async deleteReview(id: number) {
+        const deleted = await ReviewModel.deleteById(id);
+        if (!deleted) {
+            throw new Error('Review not found');
+        }
+        return deleted;
+    },
 };

@@ -1,4 +1,3 @@
-// src/models/commentModel.ts
 import { pool } from '../config/database';
 
 export const CommentModel = {
