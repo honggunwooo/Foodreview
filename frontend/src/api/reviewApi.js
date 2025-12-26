@@ -1,5 +1,5 @@
 const API_BASE = 'http://54.180.96.130:3000/api';
-const UPLOAD_BASE = 'http://localhost:3000/api/uploads';
+const UPLOAD_BASE = 'http://54.180.96.130:3000/api/uploads';
 
 export const fetchReviews = async () => {
     const res = await fetch(API_BASE);
