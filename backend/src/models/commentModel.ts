@@ -1,28 +1,39 @@
 import { pool } from '../config/database';
 
 export const CommentModel = {
-    findByReviewId: async (reviewId: number) => {
-        const { rows } = await pool.query(
-        `
+    async getByReviewId(reviewId: number) {
+        const result = await pool.query(
+            `
         SELECT *
         FROM comments
         WHERE review_id = $1
         ORDER BY created_at ASC
         `,
-        [reviewId]
+            [reviewId]
         );
-        return rows;
+        return result.rows;
     },
 
-    create: async (reviewId: number, content: string) => {
-        const { rows } = await pool.query(
+    async create(
+        reviewId: number,
+        content: string,
+        author: string
+    ) {
+        const result = await pool.query(
         `
-        INSERT INTO comments (review_id, content)
-        VALUES ($1, $2)
-        RETURNING *
+        INSERT INTO comments (review_id, content, author)
+        VALUES ($1, $2, $3)
+      RETURNING *
         `,
-        [reviewId, content]
+            [reviewId, content, author]
         );
-        return rows[0];
+        return result.rows[0];
+    },
+
+    async delete(commentId: number) {
+        await pool.query(
+            `DELETE FROM comments WHERE id = $1`,
+            [commentId]
+        );
     },
 };

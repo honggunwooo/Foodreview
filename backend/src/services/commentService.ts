@@ -1,9 +1,19 @@
 import { CommentModel } from '../models/commentModel';
 
 export const CommentService = {
-    getComments: (reviewId: number) =>
-        CommentModel.findByReviewId(reviewId),
+    getComments(reviewId: number) {
+        return CommentModel.getByReviewId(reviewId);
+    },
 
-    createComment: (reviewId: number, content: string) =>
-        CommentModel.create(reviewId, content),
+    createComment(
+        reviewId: number,
+        content: string,
+        author: string
+    ) {
+        return CommentModel.create(reviewId, content, author);
+    },
+
+    deleteComment(commentId: number) {
+        return CommentModel.delete(commentId);
+    },
 };
