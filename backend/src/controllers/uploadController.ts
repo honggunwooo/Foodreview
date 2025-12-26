@@ -1,30 +1,28 @@
-import { Request, Response } from 'express';
-import crypto from 'crypto';
+import express from 'express';
+import multer from 'multer';
+import path from 'path';
 
-const BUCKET = process.env.AWS_S3_BUCKET!;
+const router = express.Router();
 
-export const uploadReviewImage = async (req: Request, res: Response) => {
-    try {
-        if (!req.file) {
-            return res.status(400).json({ message: '파일이 없습니다' });
-        }
+// uploads 폴더에 저장
+const storage = multer.diskStorage({
+    destination: 'uploads/',
+    filename: (req, file, cb) => {
+        const ext = path.extname(file.originalname);
+        cb(null, Date.now() + ext);
+    },
+});
 
-        const key = `reviews/${crypto.randomUUID()}-${req.file.originalname}`;
+const upload = multer({ storage });
 
-        await s3.send(
-            new PutObjectCommand({
-                Bucket: BUCKET,
-                Key: key,
-                Body: req.file.buffer,
-                ContentType: req.file.mimetype,
-            })
-        );
-
-        const imageUrl = `https://${BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${key}`;
-
-        res.status(200).json({ imageUrl });
-    } catch (e) {
-        console.error(e);
-        res.status(500).json({ message: 'S3 업로드 실패' });
+router.post('/', upload.single('image'), (req, res) => {
+    if (!req.file) {
+        return res.status(400).json({ message: '파일 없음' });
     }
-};
+
+    res.json({
+        imageUrl: `/uploads/${req.file.filename}`,
+    });
+});
+
+export default router;

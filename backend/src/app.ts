@@ -17,6 +17,9 @@ app.use(cors());
 app.use(express.json());
 app.use(morgan('dev'));
 
+app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
+
+app.use('/api/uploads', uploadRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/comments', commentRoutes);
 
